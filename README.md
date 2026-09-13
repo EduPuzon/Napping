@@ -17,33 +17,38 @@ target="_blank"
 
 I researched potential vulnerabilities associated with this attribute and discovered a vulnerability that could expose authentication information.
 
+
 ## 2. Initial Access — Daniel
 
-I exploited the vulnerability by uploading a file, which allowed me to obtain Daniel's authentication information.
+While inspecting the website's HTML, I discovered a link using `target="_blank"` without appropriate protection against reverse tabnabbing.
 
-Using the information obtained, I was able to establish an SSH connection as Daniel.
+I researched the vulnerability and learned that a malicious page opened in a new tab could potentially redirect the original tab to a fake login page through `window.opener`.
+
+I hosted a malicious page and used the website's functionality to get the victim to open it. This allowed me to capture Daniel's authentication information through HTTP traffic.
+
+Using the recovered credentials, I established an SSH connection as Daniel.
 
 ## 3. Lateral Movement — Daniel to Adrian
 
-After gaining access to Daniel's account, I explored the available files and discovered a Python script named `query.py` associated with Adrian.
+After gaining access as Daniel, I checked the available files and permissions.
 
-I found that I could modify the script. I edited it using `nano` and replaced its contents with a reverse shell payload.
+I discovered that Daniel belonged to the `administrators` group and had write access to Adrian's `query.py` script.
 
-This allowed me to obtain SSH access as Adrian.
+The script ran periodically with Adrian's privileges. I modified it to execute a reverse shell, allowing me to obtain access as Adrian.
 
 ## 4. Privilege Escalation — Adrian to Root
 
-While enumerating Adrian's privileges, I discovered that Vim could be executed using `sudo` without requiring a password.
+While checking Adrian's sudo permissions, I discovered that Vim could be executed as root without a password.
 
-I used the following command to spawn a shell with elevated privileges:
+I used the following command to spawn a shell:
 
 ```bash
 sudo /usr/bin/vim -c ':!/bin/sh'
 ```
 
-Vim allowed me to execute a shell command, resulting in a root shell.
+Since Vim was running with root privileges, the shell inherited those privileges.
 
-With root access, I successfully completed the machine.
+I successfully obtained root access and completed the machine.
 
 ## 5. Summary
 
