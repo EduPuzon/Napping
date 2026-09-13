@@ -1,9 +1,9 @@
 
-# Napping — Hack The Box Write-up
+# Napping — Tryhackme Write-up
 
 ## Overview
 
-Napping is a Hack The Box machine that involves web application enumeration, initial access, lateral movement between users, and Linux privilege escalation.
+Napping is a tryhackme machine that involves web application enumeration, initial access, lateral movement between users, and Linux privilege escalation.
 
 The objective is to gain access to the machine and escalate privileges to root.
 
